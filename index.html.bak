@@ -1,19 +1,61 @@
+
+
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
+	<meta HTTP-EQUIV="refresh" CONTENT="60"> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diaporama Dynamique</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .slideshow-container {
+            position: relative;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide img {
+            width: 100%;
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            cursor: pointer;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
 </head>
 <body>
     <div class="slideshow-container" id="slideshow-container"></div>
 
     <script>
         $(document).ready(function() {
-            // ID du dossier Google Drive
-            var folderId = '1KZcrLA-C5yzi8dV_knd1Jliv4I19P3LJ';
+		    var folderId = '1KZcrLA-C5yzi8dV_knd1Jliv4I19P3LJ';
             var apiKey = 'AIzaSyDbmAMd8FseHq3OElImnOND45Qu49aWbM8';
+
             var apiUrl = 'https://www.googleapis.com/drive/v3/files';
 
             $.ajax({
@@ -30,17 +72,34 @@
 
                     var slideshowContainer = $('#slideshow-container');
 
-                    images.forEach(function(image) {
+                    images.forEach(function(image, index) {
                         var imageUrl = 'https://drive.google.com/uc?export=view&id=' + image.id;
-                        var slide = $('<div class="slide fade"><img src="' + imageUrl + '" style="width:100%"></div>');
+                        var slide = $('<div class="slide"><img src="' + imageUrl + '"></div>');
                         slideshowContainer.append(slide);
                     });
+
+                    var slideIndex = 0;
+
+                    function showSlides() {
+                        var slides = $('.slide');
+
+                        slides.hide();
+
+                        slideIndex++;
+
+                        if (slideIndex > slides.length) {
+                            slideIndex = 1;
+                        }
+
+                        slides.eq(slideIndex - 1).show();
+
+                        setTimeout(showSlides, 3500); // Change d'image toutes les 2 secondes
+                    }
+
+                    showSlides();
                 }
             });
         });
-		
-		
     </script>
-
 </body>
 </html>
