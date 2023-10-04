@@ -14,7 +14,7 @@
             var accessToken = 'sl.BnThAR_57dlE3VOnL0FWrPcpE-KuwPMG5K5sSYXrYyZLih7kGKPGNQd_hQDHzWIy_gtchIoqXQRiNxoAAJw9iF5ZY6MmVnIeqmuRODFfgsE0pKweL-D-GmEkqUtWK9y-8PLBkrLWDyUjGtXNO59Ztn8';
 
             // Répertoire Dropbox
-            var folderPath = '/Ecran%20Affiches/';
+            var folderPath = '/Affiches/';
 
             // URL de base pour les liens publics Dropbox
             var baseUrl = 'https://www.dropbox.com/s/';
