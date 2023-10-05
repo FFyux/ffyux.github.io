@@ -1,55 +1,105 @@
+
+
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
+	<meta HTTP-EQUIV="refresh" CONTENT="600"> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diaporama Dropbox</title>
+    <title>Diaporama Dynamique</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .slideshow-container {
+            position: relative;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide img {
+            width: 100%;
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            cursor: pointer;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
 </head>
 <body>
     <div class="slideshow-container" id="slideshow-container"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Access Token Dropbox
-            var accessToken = 'sl.BnTXQ-P_8TPgkhP-ojPHtgL47LEtWrkQKXFV-qvf5iW9HRKIjc4bU3ff2ujol-1lRZBiNl72rq4BMuIURuvidF22IRONZXqAtX0Bn_M9yRPf7LmK6Tc1OhN9UZ7sdKUtLqPq-QzoVHRks-U';
+		//1YjKfsyFrn4ih7c7Trlak7lJPmDDKRlRa
+        $(document).ready(function() {
+		    var folderId = '1Ob1me1qeOjEsxN5_D9L5Mi8d4bSVJSU8';
+            var apiKey = 'AIzaSyDbmAMd8FseHq3OElImnOND45Qu49aWbM8';
 
-            // Répertoire Dropbox
-            var folderPath = '/Affiches/';
+            var apiUrl = 'https://www.googleapis.com/drive/v3/files';
 
-            // URL de base pour les liens publics Dropbox
-            var baseUrl = 'https://www.dropbox.com/s/';
-
-            // Appel à l'API Dropbox pour lister les fichiers du dossier
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://api.dropboxapi.com/2/files/list_folder');
-            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    var entries = response.entries;
-
-                    var slideshowContainer = document.getElementById('slideshow-container');
-
-                    entries.forEach(function(entry) {
-                        if (entry['.tag'] === 'file' && entry.name.endsWith('.jpg')) {
-                            var imageUrl = baseUrl + entry.id + '/' + entry.name;
-                            var slide = document.createElement('div');
-                            slide.className = 'slide fade';
-                            slide.innerHTML = '<img src="' + imageUrl + '" style="width:100%">';
-                            slideshowContainer.appendChild(slide);
-                        }
+            $.ajax({
+                url: apiUrl,
+                type: 'GET',
+                data: {
+                    q: "'" + folderId + "' in parents",
+                    key: apiKey
+                },
+                success: function(data) {
+                    var images = data.files.filter(function(file) {
+                        return file.mimeType.startsWith('image/');
                     });
+
+                    var slideshowContainer = $('#slideshow-container');
+
+                    images.forEach(function(image, index) {
+                        var imageUrl = 'https://drive.google.com/uc?export=view&id=' + image.id;
+                        var slide = $('<div class="slide"><img src="' + imageUrl + '"></div>');
+                        slideshowContainer.append(slide);
+                    });
+
+                    var slideIndex = 0;
+
+                    function showSlides() {
+                        var slides = $('.slide');
+
+                        slides.hide();
+
+                        slideIndex++;
+
+                        if (slideIndex > slides.length) {
+                            slideIndex = 1;
+                        }
+
+                        slides.eq(slideIndex - 1).show();
+
+                        setTimeout(showSlides, 3500); // Change d'image toutes les 2 secondes
+                    }
+
+                    showSlides();
                 }
-            };
-            xhr.send(JSON.stringify({
-                path: folderPath,
-                recursive: false,
-                include_media_info: false,
-                include_deleted: false,
-                include_has_explicit_shared_members: false,
-                include_mounted_folders: true
-            }));
+            });
         });
     </script>
 </body>
