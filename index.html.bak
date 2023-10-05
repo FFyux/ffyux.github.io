@@ -11,7 +11,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Access Token Dropbox
-            var accessToken = 'sl.BnSq-BKIgxX8DKzxAnjGBuXzTMDTsYGDR6M-FsPoEHa8Uh9sY1FehwZnENYHiV8O2j0rWRcEdyG7n0V1A5NFiujSL9jMB37_BTkRmpYhltfGI2eA_7Lhn5ufWardUf30TYnjByyUI5tYq8c';
+            var accessToken = 'sl.BnTXQ-P_8TPgkhP-ojPHtgL47LEtWrkQKXFV-qvf5iW9HRKIjc4bU3ff2ujol-1lRZBiNl72rq4BMuIURuvidF22IRONZXqAtX0Bn_M9yRPf7LmK6Tc1OhN9UZ7sdKUtLqPq-QzoVHRks-U';
 
             // Répertoire Dropbox
             var folderPath = '/Affiches/';
